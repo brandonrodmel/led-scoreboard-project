@@ -1,3 +1,5 @@
+# testing mlb stats api
+
 import mlbstatsapi
 import datetime
 
@@ -10,6 +12,7 @@ team = mlb.get_team(team_id=TEAM_ID)
 
 # Check if team is playing today
 today = str(datetime.date.today())
+# today = str(datetime.date.today() + datetime.timedelta(days=1))
 schedule = mlb.get_schedule(date=today, team_id=TEAM_ID)
 
 if schedule == None: # If team does not play today, check tomorrow
@@ -19,7 +22,10 @@ if schedule == None: # If team does not play today, check tomorrow
 dates = schedule.dates[0]
 game = dates.games[0]
 
-game_id = game.game_pk
+# game_json = game.model_dump_json(indent=2)
+# with open('game_data.json', 'w') as f:
+#     f.write(game_json)
+
 
 HOME_TEAM = game.teams.home.team.name
 HOME_TEAM_ID = game.teams.home.team.id
@@ -54,6 +60,7 @@ if(GAME_STATUS == "Final"): # Game has ended
         LOSER_ABBREV = mlb.get_team(team_id=HOME_TEAM_ID).abbreviation        
     print("RESULT: " + WINNER_ABBREV + " " + str(WINNER_SCORE) + ", " + LOSER_ABBREV + " " + str(LOSER_SCORE))    
 elif(GAME_STATUS == "Scheduled" or GAME_STATUS == "Warmup"): # Game has not started
+    
     game_location = game.venue.name
     print("Location: " + game_location)
     print("Time: ")
